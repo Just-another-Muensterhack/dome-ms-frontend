@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Chip, Dialog, SearchBar } from '@helpwave/hightide'
-import type { Domain } from '@/api/useDomainsQuery'
+import type { Domain } from '@/api/types/domain'
 import { useDomeTranslation } from '@/i18n/useDomeTranslation'
-import { domainChipPreview, domainsMatchingUrl } from '@/utils/domains'
+import { domainChipPreview, domainLabel, domainsMatchingName } from '@/utils/domains'
 
 type WebsiteDomainChipsProps = {
   websiteName: string,
@@ -17,7 +17,7 @@ export const WebsiteDomainChips = ({
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')
   const preview = domainChipPreview(domains)
-  const matches = domainsMatchingUrl(domains, query)
+  const matches = domainsMatchingName(domains, query)
 
   if (domains.length === 0) {
     return (
@@ -30,7 +30,7 @@ export const WebsiteDomainChips = ({
       <div className="flex flex-wrap justify-start gap-2">
         {preview.visible.map((domain) => (
           <Chip key={domain.id} color="neutral" coloringStyle="tonal" size="sm">
-            {domain.url}
+            {domainLabel(domain)}
           </Chip>
         ))}
         {preview.hiddenCount > 0 && (
@@ -73,10 +73,10 @@ export const WebsiteDomainChips = ({
             <p className="typography-body text-description">{translation('noDomainsMatchSearch')}</p>
           )}
           {matches.length > 0 && (
-            <div className="flex flex-wrap justify-start gap-2">
+            <div className="flex-col-2 justify-start">
               {matches.map((domain) => (
                 <Chip key={domain.id} color="neutral" coloringStyle="tonal" size="sm">
-                  {domain.url}
+                  {domainLabel(domain)}
                 </Chip>
               ))}
             </div>

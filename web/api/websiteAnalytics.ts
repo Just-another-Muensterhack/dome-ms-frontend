@@ -4,19 +4,7 @@ import {
   type UseQueryOptions,
   type UseQueryResult
 } from '@tanstack/react-query'
-
-export type WebsiteAnalyticsCount = {
-  count: number,
-  date: Date,
-}
-
-export type WebsiteAnalytics = {
-  visitors: {
-    all: number,
-  } & Record<string, number>,
-  requests: WebsiteAnalyticsCount[],
-  blockedRequests: WebsiteAnalyticsCount[],
-}
+import type { WebsiteAnalytics, WebsiteAnalyticsCount } from '@/api/types/websiteAnalytics'
 
 type WebsiteAnalyticsCountSource = {
   count: number,

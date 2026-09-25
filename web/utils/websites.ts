@@ -1,14 +1,15 @@
-import type { Website, WebsiteDeployment } from '@/api/useWebsites'
+import type { Domain } from '@/api/types/domain'
+import type { Website } from '@/api/types/website'
 
 const previewLimit = 3
 const collapsedPreviewCount = 2
 
 export type DeploymentPreview = {
-  visible: WebsiteDeployment[],
+  visible: Domain[],
   hiddenCount: number,
 }
 
-export const deploymentPreview = (deployments: WebsiteDeployment[]): DeploymentPreview => {
+export const deploymentPreview = (deployments: Domain[]): DeploymentPreview => {
   if (deployments.length > previewLimit) {
     return {
       visible: deployments.slice(0, collapsedPreviewCount),

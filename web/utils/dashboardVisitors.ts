@@ -1,4 +1,4 @@
-import type { WebsiteAnalytics } from '@/api/useWebsiteAnalytics'
+import type { WebsiteAnalytics } from '@/api/types/websiteAnalytics'
 
 export const dayMs = 24 * 60 * 60 * 1000
 

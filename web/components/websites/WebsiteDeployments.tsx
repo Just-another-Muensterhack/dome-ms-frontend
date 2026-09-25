@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import { Button, Dialog } from '@helpwave/hightide'
-import type { WebsiteDeployment } from '@/api/useWebsites'
+import type { Domain } from '@/api/types/domain'
 import { WebsiteUrlLink } from '@/components/websites/WebsiteUrlLink'
 import { useDomeTranslation } from '@/i18n/useDomeTranslation'
+import { domainLabel } from '@/utils/domains'
 import { deploymentPreview } from '@/utils/websites'
 
 type WebsiteDeploymentsProps = {
   websiteName: string,
-  deployments: WebsiteDeployment[],
+  deployments: Domain[],
 }
+
+const deploymentUrl = (domain: Domain): string => `https://${domain.name}`
 
 export const WebsiteDeployments = ({
   websiteName,
@@ -27,7 +30,7 @@ export const WebsiteDeployments = ({
   return (
     <div className="flex-col-2">
       {preview.visible.map((deployment) => (
-        <WebsiteUrlLink key={deployment.id} url={deployment.url} />
+        <WebsiteUrlLink key={deployment.id} url={deploymentUrl(deployment)} label={domainLabel(deployment)} />
       ))}
       {preview.hiddenCount > 0 && (
         <Button
@@ -50,7 +53,7 @@ export const WebsiteDeployments = ({
       >
         <div className="flex-col-2">
           {deployments.map((deployment) => (
-            <WebsiteUrlLink key={deployment.id} url={deployment.url} />
+            <WebsiteUrlLink key={deployment.id} url={deploymentUrl(deployment)} label={domainLabel(deployment)} />
           ))}
         </div>
       </Dialog>

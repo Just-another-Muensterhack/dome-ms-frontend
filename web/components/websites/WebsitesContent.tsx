@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { LoadingAndErrorComponent, SearchBar } from '@helpwave/hightide'
-import { useWebsites } from '@/api/useWebsites'
+import { Button, LoadingAndErrorComponent, SearchBar } from '@helpwave/hightide'
+import { useWebsites } from '@/api/website'
+import { AddWebsiteDialog } from '@/components/websites/AddWebsiteDialog'
 import { WebsiteCard } from '@/components/websites/WebsiteCard'
 import { useDomeTranslation } from '@/i18n/useDomeTranslation'
 import { websitesMatchingName } from '@/utils/websites'
@@ -8,12 +9,19 @@ import { websitesMatchingName } from '@/utils/websites'
 export const WebsitesContent = () => {
   const translation = useDomeTranslation()
   const [query, setQuery] = useState('')
+  const [isAddOpen, setIsAddOpen] = useState(false)
   const websites = useWebsites()
   const matches = websites.data ? websitesMatchingName(websites.data, query) : []
 
   return (
     <div className="flex-col-4">
-      <h1 className="typography-title-lg">{translation('navWebsites')}</h1>
+      <div className="flex-row-4 items-center justify-between">
+        <h1 className="typography-title-lg">{translation('navWebsites')}</h1>
+        <Button type="button" onClick={() => setIsAddOpen(true)}>
+          {translation('addWebsite')}
+        </Button>
+      </div>
+      <AddWebsiteDialog isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} />
       <SearchBar
         value={query}
         onValueChange={setQuery}

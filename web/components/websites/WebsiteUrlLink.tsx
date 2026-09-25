@@ -1,9 +1,11 @@
 type WebsiteUrlLinkProps = {
   url: string,
+  label?: string,
 }
 
 export const WebsiteUrlLink = ({
   url,
+  label,
 }: WebsiteUrlLinkProps) => {
   return (
     <a
@@ -12,7 +14,7 @@ export const WebsiteUrlLink = ({
       rel="noreferrer"
       className="typography-body text-primary block truncate hover:underline"
     >
-      {url}
+      {label ?? url}
     </a>
   )
 }

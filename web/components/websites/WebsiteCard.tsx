@@ -1,11 +1,9 @@
 import { useRouter } from 'next/router'
 import { Card, IconButton } from '@helpwave/hightide'
 import { ChartColumnIcon } from 'lucide-react'
-import { useDomainsQuery } from '@/api/useDomainsQuery'
-import type { Website } from '@/api/useWebsites'
+import type { Website } from '@/api/types/website'
 import { WebsiteDomainChips } from '@/components/websites/WebsiteDomainChips'
 import { useDomeTranslation } from '@/i18n/useDomeTranslation'
-import { domainsForWebsite } from '@/utils/domains'
 
 type WebsiteCardProps = {
   website: Website,
@@ -16,8 +14,6 @@ export const WebsiteCard = ({
 }: WebsiteCardProps) => {
   const router = useRouter()
   const translation = useDomeTranslation()
-  const domains = useDomainsQuery()
-  const websiteDomains = domainsForWebsite(domains.data?.domains ?? [], website.id)
 
   return (
     <Card
@@ -31,14 +27,14 @@ export const WebsiteCard = ({
           coloringStyle="text"
           tooltip={translation('analyticsFor', { name: website.name })}
           onClick={() => {
-            void router.push(`/analytics/${website.id}`)
+            void router.push(`/website/${website.id}`)
           }}
         >
           <ChartColumnIcon className="size-5" />
         </IconButton>
       )}
     >
-      <WebsiteDomainChips websiteName={website.name} domains={websiteDomains} />
+      <WebsiteDomainChips websiteName={website.name} domains={website.domains} />
     </Card>
   )
 }

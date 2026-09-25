@@ -5,9 +5,10 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { AppPage, IconButton, type AppPageNavigationItem } from '@helpwave/hightide'
 import { GlobeIcon, Grid2X2PlusIcon, Link2Icon, SettingsIcon } from 'lucide-react'
-import { useDomainsQuery } from '@/api/useDomainsQuery'
-import { useWebsites } from '@/api/useWebsites'
+import { useDomainsQuery } from '@/api/domain'
+import { useWebsites } from '@/api/website'
 import { useDomeTranslation } from '@/i18n/useDomeTranslation'
+import { domainLabel } from '@/utils/domains'
 import titleWrapper from '@/utils/titleWrapper'
 
 type PageProps = PropsWithChildren<{
@@ -33,24 +34,36 @@ export const Page = ({
     {
       id: 'websites',
       label: translation('navWebsites'),
-      url: '/websites',
       icon: <GlobeIcon className="size-5" />,
-      items: (websites.data ?? []).map((website) => ({
-        id: `website-${website.id}`,
-        label: website.name,
-        url: `/websites#${website.id}`,
-      })),
+      items: [
+        {
+          id: 'websites-all',
+          label: translation('navAll'),
+          url: '/websites',
+        },
+        ...(websites.data ?? []).map((website) => ({
+          id: `website-${website.id}`,
+          label: website.name,
+          url: `/website/${website.id}`,
+        })),
+      ],
     },
     {
       id: 'domains',
       label: translation('navDomains'),
-      url: '/domains',
       icon: <Link2Icon className="size-5" />,
-      items: (domains.data?.domains ?? []).map((domain) => ({
-        id: `domain-${domain.id}`,
-        label: domain.url,
-        url: `/domains#${domain.id}`,
-      })),
+      items: [
+        {
+          id: 'domains-all',
+          label: translation('navAll'),
+          url: '/domains',
+        },
+        ...(domains.data ?? []).map((domain) => ({
+          id: `domain-${domain.id}`,
+          label: domainLabel(domain),
+          url: `/domains#${domain.id}`,
+        })),
+      ],
     },
   ], [websites.data, domains.data, translation])
 

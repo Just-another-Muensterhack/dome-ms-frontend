@@ -1,8 +1,11 @@
 import Link from 'next/link'
 import { Expandable, LoadingAndErrorComponent } from '@helpwave/hightide'
-import { useDomainsQuery, type Domain } from '@/api/useDomainsQuery'
-import { useWebsites, type Website } from '@/api/useWebsites'
+import { useDomainsQuery } from '@/api/domain'
+import { useWebsites } from '@/api/website'
+import type { Domain } from '@/api/types/domain'
+import type { Website } from '@/api/types/website'
 import { useDomeTranslation } from '@/i18n/useDomeTranslation'
+import { domainLabel } from '@/utils/domains'
 
 type NamedEntry = {
   id: string,
@@ -10,13 +13,7 @@ type NamedEntry = {
   href: string,
 }
 
-const domainName = (domain: Domain) => {
-  try {
-    return new URL(domain.url).host
-  } catch {
-    return domain.url
-  }
-}
+const domainName = (domain: Domain) => domainLabel(domain)
 
 const NameList = ({
   entries,
@@ -81,7 +78,7 @@ const websiteEntries = (websites: Website[]): NamedEntry[] => (
   websites.map((website) => ({
     id: website.id,
     name: website.name,
-    href: `/websites#${website.id}`,
+    href: `/website/${website.id}`,
   }))
 )
 
@@ -89,7 +86,7 @@ export const DashboardColumns = () => {
   const translation = useDomeTranslation()
   const domainsQuery = useDomainsQuery()
   const websitesQuery = useWebsites()
-  const domains = domainEntries(domainsQuery.data?.domains ?? [])
+  const domains = domainEntries(domainsQuery.data ?? [])
   const websites = websiteEntries(websitesQuery.data ?? [])
 
   return (

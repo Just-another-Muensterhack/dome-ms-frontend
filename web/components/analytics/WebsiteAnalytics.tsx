@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
-import { useWebsiteAnalytics } from '@/api/useWebsiteAnalytics'
-import { useWebsites } from '@/api/useWebsites'
+import { useWebsiteAnalytics } from '@/api/websiteAnalytics'
 import { VisitorRing } from '@/components/dashboard/VisitorRing'
 import { VisitorTimeline } from '@/components/dashboard/VisitorTimeline'
 import { useDomeTranslation, useLocale } from '@/i18n/useDomeTranslation'
@@ -21,8 +20,6 @@ export const WebsiteAnalytics = ({
   const translation = useDomeTranslation()
   const { locale } = useLocale()
   const analytics = useWebsiteAnalytics(websiteId)
-  const websites = useWebsites()
-  const website = websites.data?.find((item) => item.id === websiteId)
   const now = useMemo(() => new Date(), [])
   const data = analytics.data
   const segments = data
@@ -38,7 +35,6 @@ export const WebsiteAnalytics = ({
 
   return (
     <div className="flex-col-4">
-      <h1 className="typography-title-lg">{website?.name ?? translation('analytics')}</h1>
       {analytics.isPending && (
         <p className="typography-body text-description">{translation('loadingAnalytics')}</p>
       )}
