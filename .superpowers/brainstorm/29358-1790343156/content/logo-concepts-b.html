@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dome.ms Logoideen</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --forest: #143c31;
+      --ink: #102a23;
+      --lime: #dfff45;
+      --mint: #72b9a5;
+      --paper: #f3f0e6;
+      --muted: #6b746f;
+      --line: rgba(16, 42, 35, .16);
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #e8ebe4;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main {
+      width: min(1440px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 44px 0 56px;
+    }
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 390px);
+      align-items: end;
+      gap: 40px;
+      margin-bottom: 28px;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: #56645e;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 830px;
+      margin: 0;
+      font-size: clamp(36px, 4.5vw, 64px);
+      font-weight: 700;
+      line-height: .98;
+      letter-spacing: 0;
+    }
+    header p:last-child {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .concepts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .concept {
+      overflow: hidden;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      background: var(--paper);
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+    .concept:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 34px rgba(16,42,35,.13);
+    }
+    .concept.selected {
+      border-color: var(--forest);
+      box-shadow: 0 0 0 3px rgba(20,60,49,.12), 0 16px 34px rgba(16,42,35,.14);
+    }
+    .stage {
+      position: relative;
+      min-height: 500px;
+      padding: 20px;
+      background: var(--paper);
+    }
+    .stage-head {
+      display: flex;
+      position: relative;
+      z-index: 3;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .letter {
+      display: grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+    }
+    .mark-space {
+      display: grid;
+      min-height: 268px;
+      place-items: center;
+    }
+    .mark-space svg {
+      width: min(220px, 74%);
+      height: auto;
+      overflow: visible;
+    }
+    .lockup {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      min-height: 74px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .lockup svg { width: 42px; height: 42px; }
+    .wordmark {
+      font-family: "Trebuchet MS", ui-sans-serif, sans-serif;
+      font-size: clamp(32px, 3.4vw, 47px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+    .wordmark .accent { color: #719500; }
+    .tests {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .app-test {
+      display: flex;
+      min-height: 72px;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 5px;
+      background: var(--forest);
+      color: var(--paper);
+    }
+    .app-test.light {
+      background: #dfe5da;
+      color: var(--forest);
+    }
+    .app-test svg { flex: 0 0 auto; width: 30px; height: 30px; }
+    .app-test span {
+      min-width: 0;
+      font-size: 10px;
+      font-weight: 750;
+      line-height: 1.25;
+      text-transform: uppercase;
+    }
+    .description {
+      padding: 20px 20px 23px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+    .description h2 {
+      margin: 0 0 7px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+    .description p {
+      min-height: 62px;
+      margin: 0;
+      color: #626c67;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .signal {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 5px 8px;
+      border-radius: 3px;
+      background: #edf5d5;
+      color: #355044;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    footer strong { color: var(--ink); }
+
+    .c .stage { background: var(--forest); color: var(--paper); }
+    .c .stage .lockup { border-color: rgba(243,240,230,.22); }
+    .c .app-test { background: var(--paper); color: var(--forest); }
+    .c .app-test.light { background: var(--lime); color: var(--forest); }
+    .c .wordmark .accent { color: var(--lime); }
+    @media (max-width: 980px) {
+      header { grid-template-columns: 1fr; }
+      .concepts { grid-template-columns: 1fr; }
+      .description p { min-height: 0; }
+    }
+    @media (max-width: 560px) {
+      main { width: min(100% - 24px, 1440px); padding-top: 28px; }
+      h1 { font-size: 39px; }
+      .stage { min-height: 470px; }
+      footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="eyebrow">dome.ms / Logoentwicklung / 02</p>
+        <h1>Welches Zeichen darf diese Markenwelt tragen?</h1>
+      </div>
+      <p>Alle drei Ans&auml;tze bleiben im gew&auml;hlten Grundger&uuml;st von B. Beurteile zuerst Idee und Wiedererkennbarkeit, noch nicht die letzten Kurven oder die exakte Schrift.</p>
+    </header>
+
+    <section class="concepts">
+      <article class="concept a" data-choice="a-offener-bogen" onclick="toggleSelect(this)">
+        <div class="stage">
+          <div class="stage-head"><span>A / Direkt</span><span class="letter">A</span></div>
+          <div class="mark-space">
+            <svg viewBox="0 0 180 160" role="img" aria-label="Offener Bogen mit drei Punkten">
+              <path d="M26 128V88C26 48 53 24 90 24s64 24 64 64v40" fill="none" stroke="#143c31" stroke-width="22" stroke-linecap="round"/>
+              <circle cx="26" cy="128" r="15" fill="#dfff45" stroke="#143c31" stroke-width="7"/>
+              <circle cx="90" cy="128" r="15" fill="#143c31"/>
+              <circle cx="154" cy="128" r="15" fill="#143c31"/>
+            </svg>
+          </div>
+          <div class="lockup">
+            <svg viewBox="0 0 180 160" aria-hidden="true">
+              <path d="M26 128V88C26 48 53 24 90 24s64 24 64 64v40" fill="none" stroke="#143c31" stroke-width="22" stroke-linecap="round"/>
+              <circle cx="26" cy="128" r="15" fill="#dfff45" stroke="#143c31" stroke-width="7"/><circle cx="90" cy="128" r="15" fill="#143c31"/><circle cx="154" cy="128" r="15" fill="#143c31"/>
+            </svg>
+            <div class="wordmark">dome<span class="accent">.</span>ms</div>
+          </div>
+          <div class="tests">
+            <div class="app-test">
+              <svg viewBox="0 0 180 160" aria-hidden="true"><path d="M26 128V88C26 48 53 24 90 24s64 24 64 64v40" fill="none" stroke="#f3f0e6" stroke-width="22" stroke-linecap="round"/><circle cx="26" cy="128" r="15" fill="#dfff45"/><circle cx="90" cy="128" r="15" fill="#f3f0e6"/><circle cx="154" cy="128" r="15" fill="#f3f0e6"/></svg>
+              <span>Gemeinsam<br>online</span>
+            </div>
+            <div class="app-test light">
+              <svg viewBox="0 0 180 160" aria-hidden="true"><path d="M26 128V88C26 48 53 24 90 24s64 24 64 64v40" fill="none" stroke="#143c31" stroke-width="22" stroke-linecap="round"/><circle cx="26" cy="128" r="15" fill="#dfff45" stroke="#143c31" stroke-width="7"/><circle cx="90" cy="128" r="15" fill="#143c31"/><circle cx="154" cy="128" r="15" fill="#143c31"/></svg>
+              <span>Offen f&uuml;r<br>M&uuml;nster</span>
+            </div>
+          </div>
+        </div>
+        <div class="description">
+          <h2>Offener Bogen</h2>
+          <p>Ein gemeinsames Dach &uuml;ber mehreren Beteiligten. Sofort verst&auml;ndlich und freundlich, aber etwas n&auml;her an der Namensmetapher.</p>
+          <span class="signal">N&auml;he + Schutz</span>
+        </div>
+      </article>
+
+      <article class="concept b" data-choice="b-gemeinsames-d" onclick="toggleSelect(this)">
+        <div class="stage">
+          <div class="stage-head"><span>B / Eigenst&auml;ndig</span><span class="letter">B</span></div>
+          <div class="mark-space">
+            <svg viewBox="0 0 180 180" role="img" aria-label="Abstraktes kleines d mit offenem Netzwerkpunkt">
+              <path d="M121 22v99c0 24-19 39-43 39-28 0-48-20-48-48 0-27 20-47 48-47 18 0 33 9 43 23" fill="none" stroke="#143c31" stroke-width="23" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="30" cy="112" r="14" fill="#dfff45" stroke="#143c31" stroke-width="7"/>
+              <path d="M121 46h27" fill="none" stroke="#72b9a5" stroke-width="13" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="lockup">
+            <svg viewBox="0 0 180 180" aria-hidden="true"><path d="M121 22v99c0 24-19 39-43 39-28 0-48-20-48-48 0-27 20-47 48-47 18 0 33 9 43 23" fill="none" stroke="#143c31" stroke-width="23" stroke-linecap="round" stroke-linejoin="round"/><circle cx="30" cy="112" r="14" fill="#dfff45" stroke="#143c31" stroke-width="7"/><path d="M121 46h27" fill="none" stroke="#72b9a5" stroke-width="13" stroke-linecap="round"/></svg>
+            <div class="wordmark">dome<span class="accent">.</span>ms</div>
+          </div>
+          <div class="tests">
+            <div class="app-test">
+              <svg viewBox="0 0 180 180" aria-hidden="true"><path d="M121 22v99c0 24-19 39-43 39-28 0-48-20-48-48 0-27 20-47 48-47 18 0 33 9 43 23" fill="none" stroke="#f3f0e6" stroke-width="23" stroke-linecap="round"/><circle cx="30" cy="112" r="14" fill="#dfff45"/><path d="M121 46h27" stroke="#72b9a5" stroke-width="13" stroke-linecap="round"/></svg>
+              <span>Ein Netz,<br>das bleibt</span>
+            </div>
+            <div class="app-test light">
+              <svg viewBox="0 0 180 180" aria-hidden="true"><path d="M121 22v99c0 24-19 39-43 39-28 0-48-20-48-48 0-27 20-47 48-47 18 0 33 9 43 23" fill="none" stroke="#143c31" stroke-width="23" stroke-linecap="round"/><circle cx="30" cy="112" r="14" fill="#dfff45" stroke="#143c31" stroke-width="7"/><path d="M121 46h27" stroke="#72b9a5" stroke-width="13" stroke-linecap="round"/></svg>
+              <span>Dein Ort<br>im Netz</span>
+            </div>
+          </div>
+        </div>
+        <div class="description">
+          <h2>Gemeinsames d</h2>
+          <p>Monogramm, Verbindung und offene Stelle in einem Zeichen. Unverwechselbarer und gut als App-Icon, braucht aber etwas mehr Einf&uuml;hrung.</p>
+          <span class="signal">Marke + Netzwerk</span>
+        </div>
+      </article>
+
+      <article class="concept c" data-choice="c-der-punkt" onclick="toggleSelect(this)">
+        <div class="stage">
+          <div class="stage-head"><span>C / Typografisch</span><span class="letter">C</span></div>
+          <div class="mark-space">
+            <svg viewBox="0 0 220 170" role="img" aria-label="Gro&szlig;er Verbindungspunkt zwischen dome und ms">
+              <circle cx="110" cy="82" r="58" fill="none" stroke="#f3f0e6" stroke-width="19"/>
+              <circle cx="110" cy="82" r="24" fill="#dfff45"/>
+              <path d="M30 82h41M149 82h41" stroke="#72b9a5" stroke-width="15" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="lockup">
+            <div class="wordmark">dome<span class="accent">.</span>ms</div>
+          </div>
+          <div class="tests">
+            <div class="app-test">
+              <svg viewBox="0 0 220 170" aria-hidden="true"><circle cx="110" cy="82" r="58" fill="none" stroke="#143c31" stroke-width="19"/><circle cx="110" cy="82" r="24" fill="#dfff45"/><path d="M30 82h41M149 82h41" stroke="#72b9a5" stroke-width="15" stroke-linecap="round"/></svg>
+              <span>Der Punkt,<br>der verbindet</span>
+            </div>
+            <div class="app-test light">
+              <div class="wordmark" style="font-size:25px">dome<span class="accent">.</span>ms</div>
+            </div>
+          </div>
+        </div>
+        <div class="description">
+          <h2>Der Punkt</h2>
+          <p>Die Domain selbst wird zur Marke. Minimal, digital und flexibel; die Gemeinschaft entsteht eher durch Kommunikation als durch das Symbol.</p>
+          <span class="signal">Klarheit + Digitalit&auml;t</span>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      <span><strong>W&auml;hle die st&auml;rkste Idee, nicht die perfekte Zeichnung.</strong> Form und Proportion werden danach professionell reduziert.</span>
+      <span>Du kannst auch sagen: Grundidee A, aber die Einfachheit von C.</span>
+    </footer>
+  </main>
+</body>
+</html>
