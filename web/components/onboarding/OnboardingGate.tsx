@@ -20,12 +20,7 @@ export const OnboardingGate = ({
 
   const hasNoWebsites = websites.isSuccess && websites.data.length === 0
   const hasNoDomains = domains.isSuccess && domains.data.length === 0
-  const isCheckingEmptyAccount = onboardingTimestamp === null && (websites.isPending || domains.isPending)
   const showOnboarding = onboardingTimestamp === null && hasNoWebsites && hasNoDomains
-
-  if (isCheckingEmptyAccount) {
-    return <div className="h-dvh w-screen bg-background" />
-  }
 
   const completeOnboarding = (path: string) => {
     const timestamp = new Date().toISOString()
