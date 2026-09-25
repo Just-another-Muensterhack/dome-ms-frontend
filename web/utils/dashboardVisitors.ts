@@ -1,4 +1,4 @@
-import type { DashboardAnalytics } from '@/api/useDashboardAnalytics'
+import type { WebsiteAnalytics } from '@/api/useWebsiteAnalytics'
 
 export const dayMs = 24 * 60 * 60 * 1000
 
@@ -9,7 +9,7 @@ export type VisitorCountrySegment = {
 }
 
 export const visitorCountrySegments = (
-  visitors: DashboardAnalytics['visitors'],
+  visitors: WebsiteAnalytics['visitors'],
   limit = 4
 ): VisitorCountrySegment[] => {
   const countries = Object.entries(visitors)
@@ -31,7 +31,7 @@ export const visitorCountrySegments = (
     ...segments,
     {
       id: 'others',
-      label: 'Others',
+      label: 'others',
       value: remaining.reduce((sum, country) => sum + country.count, 0),
     },
   ]

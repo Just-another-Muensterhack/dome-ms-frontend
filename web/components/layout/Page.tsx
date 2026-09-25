@@ -3,10 +3,11 @@ import { useMemo } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { AppPage, type AppPageNavigationItem } from '@helpwave/hightide'
-import { GlobeIcon, Grid2X2PlusIcon, Link2Icon } from 'lucide-react'
+import { AppPage, IconButton, type AppPageNavigationItem } from '@helpwave/hightide'
+import { GlobeIcon, Grid2X2PlusIcon, Link2Icon, SettingsIcon } from 'lucide-react'
 import { useDomainsQuery } from '@/api/useDomainsQuery'
 import { useWebsites } from '@/api/useWebsites'
+import { useDomeTranslation } from '@/i18n/useDomeTranslation'
 import titleWrapper from '@/utils/titleWrapper'
 
 type PageProps = PropsWithChildren<{
@@ -18,19 +19,20 @@ export const Page = ({
   pageTitle,
 }: PageProps) => {
   const router = useRouter()
+  const translation = useDomeTranslation()
   const websites = useWebsites()
   const domains = useDomainsQuery()
 
   const sidebarItems = useMemo((): AppPageNavigationItem[] => [
     {
       id: 'dashboard',
-      label: 'Dashboard',
+      label: translation('navDashboard'),
       url: '/',
       icon: <Grid2X2PlusIcon className="-rotate-90 size-5" />,
     },
     {
       id: 'websites',
-      label: 'Websites',
+      label: translation('navWebsites'),
       url: '/websites',
       icon: <GlobeIcon className="size-5" />,
       items: (websites.data ?? []).map((website) => ({
@@ -41,7 +43,7 @@ export const Page = ({
     },
     {
       id: 'domains',
-      label: 'Domains',
+      label: translation('navDomains'),
       url: '/domains',
       icon: <Link2Icon className="size-5" />,
       items: (domains.data?.domains ?? []).map((domain) => ({
@@ -50,20 +52,33 @@ export const Page = ({
         url: `/domains#${domain.id}`,
       })),
     },
-  ], [websites.data, domains.data])
+  ], [websites.data, domains.data, translation])
 
   return (
     <AppPage
       sidebarProps={{
         header: (
           <Link href="/" className="flex-row-1 text-primary items-center rounded-lg p-2">
-            <span className="typography-title-md whitespace-nowrap">dome</span>
+            <span className="typography-title-md whitespace-nowrap">{translation('appName')}</span>
           </Link>
         ),
         items: sidebarItems,
         activeUrl: router.asPath.split('?')[0],
         LinkComponent: Link,
       }}
+      headerActions={[
+        <IconButton
+          key="settings"
+          tooltip={translation('settings')}
+          coloringStyle="text"
+          className="ml-auto"
+          onClick={() => {
+            void router.push('/settings')
+          }}
+        >
+          <SettingsIcon />
+        </IconButton>,
+      ]}
     >
       <Head>
         <title>{titleWrapper(pageTitle)}</title>

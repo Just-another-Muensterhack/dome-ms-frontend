@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "next build",
+    "build-intl": "build-intl --force -i ./locales -o ./i18n/translations.ts -n domeTranslation",
+    "build": "npm run build-intl && next build",
     "start": "next start",
     "lint": "tsc --noEmit && eslint ."
   },
@@ -23,6 +24,7 @@
   },
   "dependencies": {
     "@helpwave/hightide": "0.17.2",
+    "@helpwave/internationalization": "0.4.0",
     "@tailwindcss/postcss": "4.3.1",
     "@tanstack/react-query": "5.101.0",
     "clsx": "2.1.1",

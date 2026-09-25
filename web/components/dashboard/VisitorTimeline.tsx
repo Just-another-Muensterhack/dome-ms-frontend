@@ -1,3 +1,5 @@
+import { useDateTimeFormat } from '@helpwave/hightide'
+import { useLocale } from '@/i18n/useDomeTranslation'
 import { dayMs } from '@/utils/dashboardVisitors'
 
 type VisitorTimelinePoint = {
@@ -9,7 +11,7 @@ type VisitorTimelineProps = {
   points: VisitorTimelinePoint[],
   end: Date,
   color?: string,
-  label?: string,
+  label: string,
 }
 
 const width = 640
@@ -21,19 +23,20 @@ const padding = {
   left: 48,
 }
 
-const formatHour = (date: Date) => date.toLocaleString('en', {
-  day: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-  hourCycle: 'h23',
-})
-
 export const VisitorTimeline = ({
   points,
   end,
   color = '#3b6cff',
-  label = 'Visitors during the last 24 hours',
+  label,
 }: VisitorTimelineProps) => {
+  const { locale } = useLocale()
+  const { is24HourFormat } = useDateTimeFormat()
+  const formatHour = (date: Date) => date.toLocaleString(locale, {
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: is24HourFormat ? 'h23' : 'h12',
+  })
   if (points.length === 0) return null
 
   const start = new Date(end.getTime() - dayMs)

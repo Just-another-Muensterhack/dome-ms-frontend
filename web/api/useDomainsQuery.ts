@@ -51,6 +51,42 @@ const domainsSource = (): DomainsQuery => ({
       url: 'https://pending.example.org',
       verified: false,
     },
+    {
+      id: 'lumen-domain',
+      url: 'https://lumen.example.com',
+      verified: true,
+      deployedWebsite: { id: 'lumen', name: 'Lumen' },
+    },
+    {
+      id: 'lumen-preview-domain',
+      url: 'https://preview.lumen.example.com',
+      verified: true,
+      deployedWebsite: { id: 'lumen', name: 'Lumen' },
+    },
+    {
+      id: 'lumen-eu-domain',
+      url: 'https://eu.lumen.example.com',
+      verified: true,
+      deployedWebsite: { id: 'lumen', name: 'Lumen' },
+    },
+    {
+      id: 'lumen-us-domain',
+      url: 'https://us.lumen.example.com',
+      verified: false,
+      deployedWebsite: { id: 'lumen', name: 'Lumen' },
+    },
+    {
+      id: 'lumen-apac-domain',
+      url: 'https://apac.lumen.example.com',
+      verified: true,
+      deployedWebsite: { id: 'lumen', name: 'Lumen' },
+    },
+    {
+      id: 'lumen-docs-domain',
+      url: 'https://docs.lumen.example.com',
+      verified: true,
+      deployedWebsite: { id: 'lumen', name: 'Lumen' },
+    },
   ],
 })
 

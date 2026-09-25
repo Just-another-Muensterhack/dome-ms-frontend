@@ -1,7 +1,9 @@
 import { useMemo } from 'react'
-import { useDashboardAnalytics } from '@/api/useDashboardAnalytics'
+import { useWebsiteAnalytics } from '@/api/useWebsiteAnalytics'
+import { useWebsites } from '@/api/useWebsites'
 import { VisitorRing } from '@/components/dashboard/VisitorRing'
 import { VisitorTimeline } from '@/components/dashboard/VisitorTimeline'
+import { useDomeTranslation, useLocale } from '@/i18n/useDomeTranslation'
 import { countryName } from '@/utils/countryName'
 import {
   countInLastDay,
@@ -9,14 +11,24 @@ import {
   visitorCountrySegments
 } from '@/utils/dashboardVisitors'
 
-export const DashboardContent = () => {
-  const analytics = useDashboardAnalytics()
+type WebsiteAnalyticsProps = {
+  websiteId: string,
+}
+
+export const WebsiteAnalytics = ({
+  websiteId,
+}: WebsiteAnalyticsProps) => {
+  const translation = useDomeTranslation()
+  const { locale } = useLocale()
+  const analytics = useWebsiteAnalytics(websiteId)
+  const websites = useWebsites()
+  const website = websites.data?.find((item) => item.id === websiteId)
   const now = useMemo(() => new Date(), [])
   const data = analytics.data
   const segments = data
     ? visitorCountrySegments(data.visitors).map((segment) => ({
       ...segment,
-      label: segment.id === 'others' ? segment.label : countryName(segment.id),
+      label: segment.id === 'others' ? translation('others') : countryName(segment.id, locale),
     }))
     : []
   const recentRequests = data ? requestsInLastDay(data.requests, now) : []
@@ -26,32 +38,40 @@ export const DashboardContent = () => {
 
   return (
     <div className="flex-col-4">
-      <h1 className="typography-title-lg">Dashboard</h1>
+      <h1 className="typography-title-lg">{website?.name ?? translation('analytics')}</h1>
       {analytics.isPending && (
-        <p className="typography-body text-description">Loading analytics</p>
+        <p className="typography-body text-description">{translation('loadingAnalytics')}</p>
       )}
       {analytics.isError && (
-        <p className="typography-body text-description">Dashboard analytics are unavailable.</p>
+        <p className="typography-body text-description">{translation('analyticsUnavailable')}</p>
       )}
       {data && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <section className="rounded-lg bg-white p-4 flex-col-4">
-            <h2 className="typography-title-md">Visitors by country</h2>
-            <VisitorRing segments={segments} total={data.visitors.all} />
+            <h2 className="typography-title-md">{translation('visitorsByCountry')}</h2>
+            <VisitorRing
+              segments={segments}
+              total={data.visitors.all}
+              label={translation('visitorsByCountry')}
+            />
           </section>
           <section className="rounded-lg bg-white p-4 flex-col-4">
-            <h2 className="typography-title-md">Visitors in the last 24 hours</h2>
+            <h2 className="typography-title-md">{translation('visitorsLastDay')}</h2>
             <p className="typography-title-lg">{visitorsLastDay}</p>
-            <VisitorTimeline points={recentRequests} end={now} />
+            <VisitorTimeline
+              points={recentRequests}
+              end={now}
+              label={translation('visitorsDuringLastDay')}
+            />
           </section>
           <section className="rounded-lg bg-white p-4 flex-col-4">
-            <h2 className="typography-title-md">Blocked requests in the last 24 hours</h2>
+            <h2 className="typography-title-md">{translation('blockedRequestsLastDay')}</h2>
             <p className="typography-title-lg">{blockedLastDay}</p>
             <VisitorTimeline
               points={recentBlockedRequests}
               end={now}
               color="#e5484d"
-              label="Blocked requests during the last 24 hours"
+              label={translation('blockedRequestsDuringLastDay')}
             />
           </section>
         </div>

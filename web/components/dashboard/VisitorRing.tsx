@@ -5,11 +5,13 @@ const segmentColors = ['#3b6cff', '#1f9d6a', '#e39b12', '#e5484d', '#8b8d98']
 type VisitorRingProps = {
   segments: VisitorCountrySegment[],
   total: number,
+  label: string,
 }
 
 export const VisitorRing = ({
   segments,
   total,
+  label,
 }: VisitorRingProps) => {
   const size = 168
   const stroke = 22
@@ -25,7 +27,7 @@ export const VisitorRing = ({
         viewBox={`0 0 ${size} ${size}`}
         className="size-40 shrink-0"
         role="img"
-        aria-label="Visitors by country"
+        aria-label={label}
       >
         <g transform={`rotate(-90 ${center} ${center})`}>
           <circle

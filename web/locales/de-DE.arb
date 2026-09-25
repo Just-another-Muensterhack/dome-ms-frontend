@@ -1,0 +1,65 @@
+{
+  "@@locale": "de-DE",
+  "appName": "dome",
+  "navDashboard": "Dashboard",
+  "navWebsites": "Websites",
+  "navDomains": "Domains",
+  "settings": "Einstellungen",
+  "language": "Sprache",
+  "theme": "Darstellung",
+  "loadingDomains": "Domains werden geladen",
+  "domainsUnavailable": "Domains sind nicht verfügbar.",
+  "noDomainsOwned": "Sie besitzen keine Domains.",
+  "loadingWebsites": "Websites werden geladen",
+  "websitesUnavailable": "Websites sind nicht verfügbar.",
+  "noWebsitesOwned": "Sie besitzen keine Websites.",
+  "noDomains": "Keine Domains",
+  "moreCount": "+{count} weitere",
+  "@moreCount": {
+    "placeholders": {
+      "count": { "type": "string" }
+    }
+  },
+  "domainsFor": "Domains für {name}",
+  "@domainsFor": {
+    "placeholders": {
+      "name": { "type": "string" }
+    }
+  },
+  "searchDomains": "Domains suchen",
+  "searchDomainsFor": "Domains für {name} suchen",
+  "@searchDomainsFor": {
+    "placeholders": {
+      "name": { "type": "string" }
+    }
+  },
+  "noDomainsMatchSearch": "Keine Domains passen zu dieser Suche.",
+  "analytics": "Analysen",
+  "loadingAnalytics": "Analysen werden geladen",
+  "analyticsUnavailable": "Analysen sind nicht verfügbar.",
+  "visitorsByCountry": "Besucher nach Land",
+  "visitorsLastDay": "Besucher in den letzten 24 Stunden",
+  "blockedRequestsLastDay": "Blockierte Anfragen in den letzten 24 Stunden",
+  "visitorsDuringLastDay": "Besucher während der letzten 24 Stunden",
+  "blockedRequestsDuringLastDay": "Blockierte Anfragen während der letzten 24 Stunden",
+  "analyticsFor": "Analysen für {name}",
+  "@analyticsFor": {
+    "placeholders": {
+      "name": { "type": "string" }
+    }
+  },
+  "verified": "Verifiziert",
+  "unverified": "Nicht verifiziert",
+  "custom": "Benutzerdefiniert",
+  "searchByName": "Nach Namen suchen",
+  "searchWebsitesByName": "Websites nach Namen suchen",
+  "noWebsitesMatchName": "Keine Websites passen zu diesem Namen.",
+  "noDeployments": "Keine Deployments",
+  "deploymentUrlsFor": "Deployment-URLs für {name}",
+  "@deploymentUrlsFor": {
+    "placeholders": {
+      "name": { "type": "string" }
+    }
+  },
+  "others": "Weitere"
+}

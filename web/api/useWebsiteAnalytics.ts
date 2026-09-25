@@ -5,33 +5,33 @@ import {
   type UseQueryResult
 } from '@tanstack/react-query'
 
-export type DashboardAnalyticsCount = {
+export type WebsiteAnalyticsCount = {
   count: number,
   date: Date,
 }
 
-export type DashboardAnalytics = {
+export type WebsiteAnalytics = {
   visitors: {
     all: number,
   } & Record<string, number>,
-  requests: DashboardAnalyticsCount[],
-  blockedRequests: DashboardAnalyticsCount[],
+  requests: WebsiteAnalyticsCount[],
+  blockedRequests: WebsiteAnalyticsCount[],
 }
 
-type DashboardAnalyticsCountSource = {
+type WebsiteAnalyticsCountSource = {
   count: number,
   date: string,
 }
 
-type DashboardAnalyticsSource = {
-  visitors: DashboardAnalytics['visitors'],
-  requests: DashboardAnalyticsCountSource[],
-  blockedRequests: DashboardAnalyticsCountSource[],
+type WebsiteAnalyticsSource = {
+  visitors: WebsiteAnalytics['visitors'],
+  requests: WebsiteAnalyticsCountSource[],
+  blockedRequests: WebsiteAnalyticsCountSource[],
 }
 
 const hourMs = 60 * 60 * 1000
 
-const dashboardAnalyticsSource = (): DashboardAnalyticsSource => {
+const websiteAnalyticsSource = (): WebsiteAnalyticsSource => {
   const now = Date.now()
   return {
     visitors: {
@@ -65,38 +65,43 @@ const dashboardAnalyticsSource = (): DashboardAnalyticsSource => {
   }
 }
 
-const parseCounts = (counts: DashboardAnalyticsCountSource[]): DashboardAnalyticsCount[] => (
+const parseCounts = (counts: WebsiteAnalyticsCountSource[]): WebsiteAnalyticsCount[] => (
   counts.map((count) => ({
     count: count.count,
     date: new Date(count.date),
   }))
 )
 
-const parseDashboardAnalytics = (source: DashboardAnalyticsSource): DashboardAnalytics => ({
+const parseWebsiteAnalytics = (source: WebsiteAnalyticsSource): WebsiteAnalytics => ({
   visitors: source.visitors,
   requests: parseCounts(source.requests),
   blockedRequests: parseCounts(source.blockedRequests),
 })
 
-const queryDashboardAnalytics = () => Promise.resolve(
-  parseDashboardAnalytics(dashboardAnalyticsSource())
-)
+const queryWebsiteAnalytics = (websiteId: string) => {
+  if (websiteId.length === 0) {
+    return Promise.reject(new Error('Missing website id'))
+  }
+  return Promise.resolve(parseWebsiteAnalytics(websiteAnalyticsSource()))
+}
 
-export type UseDashboardAnalyticsOptions = Omit<
-  UseQueryOptions<DashboardAnalytics, Error, DashboardAnalytics, QueryKey>,
+export type UseWebsiteAnalyticsOptions = Omit<
+  UseQueryOptions<WebsiteAnalytics, Error, WebsiteAnalytics, QueryKey>,
   'queryFn' | 'queryKey'
 > & {
   queryKey?: QueryKey,
 }
 
-export const useDashboardAnalytics = (
-  options?: UseDashboardAnalyticsOptions
-): UseQueryResult<DashboardAnalytics, Error> => {
+export const useWebsiteAnalytics = (
+  websiteId: string,
+  options?: UseWebsiteAnalyticsOptions
+): UseQueryResult<WebsiteAnalytics, Error> => {
   const { queryKey, ...queryOptions } = options ?? {}
 
   return useQuery({
-    queryKey: queryKey ?? ['dashboard-analytics'],
+    queryKey: queryKey ?? ['website-analytics', websiteId],
+    enabled: websiteId.length > 0,
     ...queryOptions,
-    queryFn: queryDashboardAnalytics,
+    queryFn: () => queryWebsiteAnalytics(websiteId),
   })
 }

@@ -2,6 +2,7 @@ import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HightideProvider } from '@helpwave/hightide'
+import { domeTranslation } from '@/i18n/translations'
 import titleWrapper from '@/utils/titleWrapper'
 import '../globals.css'
 
@@ -23,6 +24,7 @@ const MyApp = ({
         timeZone: 'Europe/Berlin',
         is24HourFormat: true,
       }}
+      translation={{ translation: domeTranslation }}
     >
       <QueryClientProvider client={queryClient}>
         <Head>

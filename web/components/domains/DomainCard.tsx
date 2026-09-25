@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Card, Chip } from '@helpwave/hightide'
 import type { Domain } from '@/api/useDomainsQuery'
+import { useDomeTranslation } from '@/i18n/useDomeTranslation'
 
 type DomainCardProps = {
   domain: Domain,
@@ -9,6 +10,7 @@ type DomainCardProps = {
 export const DomainCard = ({
   domain,
 }: DomainCardProps) => {
+  const translation = useDomeTranslation()
   const deployedWebsite = domain.deployedWebsite
 
   return (
@@ -22,7 +24,7 @@ export const DomainCard = ({
           coloringStyle="tonal"
           size="sm"
         >
-          {domain.verified ? 'Verified' : 'Unverified'}
+          {domain.verified ? translation('verified') : translation('unverified')}
         </Chip>
       )}
     >
@@ -34,7 +36,7 @@ export const DomainCard = ({
           {deployedWebsite.name}
         </Link>
       ) : (
-        <p className="typography-body text-description">Custom</p>
+        <p className="typography-body text-description">{translation('custom')}</p>
       )}
     </Card>
   )

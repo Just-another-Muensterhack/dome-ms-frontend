@@ -5,6 +5,7 @@ export default [
     ignores: [
       'next-env.d.ts',
       'build/*',
+      'i18n/translations.ts',
     ],
   },
   {

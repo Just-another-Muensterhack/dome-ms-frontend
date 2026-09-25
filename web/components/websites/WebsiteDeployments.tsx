@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Button, Dialog } from '@helpwave/hightide'
 import type { WebsiteDeployment } from '@/api/useWebsites'
 import { WebsiteUrlLink } from '@/components/websites/WebsiteUrlLink'
+import { useDomeTranslation } from '@/i18n/useDomeTranslation'
 import { deploymentPreview } from '@/utils/websites'
 
 type WebsiteDeploymentsProps = {
@@ -13,12 +14,13 @@ export const WebsiteDeployments = ({
   websiteName,
   deployments,
 }: WebsiteDeploymentsProps) => {
+  const translation = useDomeTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const preview = deploymentPreview(deployments)
 
   if (deployments.length === 0) {
     return (
-      <p className="typography-body text-description">No deployments</p>
+      <p className="typography-body text-description">{translation('noDeployments')}</p>
     )
   }
 
@@ -36,14 +38,14 @@ export const WebsiteDeployments = ({
           className="self-start"
           onClick={() => setIsOpen(true)}
         >
-          {`+${preview.hiddenCount} more`}
+          {translation('moreCount', { count: String(preview.hiddenCount) })}
         </Button>
       )}
       <Dialog
         isOpen={isOpen}
         isModal
         titleElement={<span className="typography-title-md">{websiteName}</span>}
-        description={`Deployment URLs for ${websiteName}`}
+        description={translation('deploymentUrlsFor', { name: websiteName })}
         onClose={() => setIsOpen(false)}
       >
         <div className="flex-col-2">
