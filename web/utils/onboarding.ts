@@ -1,13 +1,17 @@
 export const onboardingTimestampKey = 'onboarding-timestamp'
 
 export const readOnboardingTimestamp = (): string | null => {
-  if (typeof window === 'undefined') {
+  try {
+    return localStorage.getItem(onboardingTimestampKey)
+  } catch {
     return null
   }
-
-  return localStorage.getItem(onboardingTimestampKey)
 }
 
 export const writeOnboardingTimestamp = (timestamp: string): void => {
-  localStorage.setItem(onboardingTimestampKey, timestamp)
+  try {
+    localStorage.setItem(onboardingTimestampKey, timestamp)
+  } catch {
+    return
+  }
 }
