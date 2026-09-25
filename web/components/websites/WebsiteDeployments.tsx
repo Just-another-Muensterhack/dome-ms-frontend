@@ -1,0 +1,57 @@
+import { useState } from 'react'
+import { Button, Dialog } from '@helpwave/hightide'
+import type { WebsiteDeployment } from '@/api/useWebsites'
+import { WebsiteUrlLink } from '@/components/websites/WebsiteUrlLink'
+import { deploymentPreview } from '@/utils/websites'
+
+type WebsiteDeploymentsProps = {
+  websiteName: string,
+  deployments: WebsiteDeployment[],
+}
+
+export const WebsiteDeployments = ({
+  websiteName,
+  deployments,
+}: WebsiteDeploymentsProps) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const preview = deploymentPreview(deployments)
+
+  if (deployments.length === 0) {
+    return (
+      <p className="typography-body text-description">No deployments</p>
+    )
+  }
+
+  return (
+    <div className="flex-col-2">
+      {preview.visible.map((deployment) => (
+        <WebsiteUrlLink key={deployment.id} url={deployment.url} />
+      ))}
+      {preview.hiddenCount > 0 && (
+        <Button
+          type="button"
+          size="sm"
+          color="primary"
+          coloringStyle="text"
+          className="self-start"
+          onClick={() => setIsOpen(true)}
+        >
+          {`+${preview.hiddenCount} more`}
+        </Button>
+      )}
+      <Dialog
+        isOpen={isOpen}
+        isModal
+        titleElement={<span className="typography-title-md">{websiteName}</span>}
+        description={`Deployment URLs for ${websiteName}`}
+        onClose={() => setIsOpen(false)}
+      >
+        <div className="flex-col-2">
+          {deployments.map((deployment) => (
+            <WebsiteUrlLink key={deployment.id} url={deployment.url} />
+          ))}
+        </div>
+      </Dialog>
+    </div>
+  )
+}

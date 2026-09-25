@@ -4,7 +4,9 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { AppPage, type AppPageNavigationItem } from '@helpwave/hightide'
-import { Grid2X2PlusIcon } from 'lucide-react'
+import { GlobeIcon, Grid2X2PlusIcon, Link2Icon } from 'lucide-react'
+import { useDomainsQuery } from '@/api/useDomainsQuery'
+import { useWebsites } from '@/api/useWebsites'
 import titleWrapper from '@/utils/titleWrapper'
 
 type PageProps = PropsWithChildren<{
@@ -16,6 +18,8 @@ export const Page = ({
   pageTitle,
 }: PageProps) => {
   const router = useRouter()
+  const websites = useWebsites()
+  const domains = useDomainsQuery()
 
   const sidebarItems = useMemo((): AppPageNavigationItem[] => [
     {
@@ -24,7 +28,29 @@ export const Page = ({
       url: '/',
       icon: <Grid2X2PlusIcon className="-rotate-90 size-5" />,
     },
-  ], [])
+    {
+      id: 'websites',
+      label: 'Websites',
+      url: '/websites',
+      icon: <GlobeIcon className="size-5" />,
+      items: (websites.data ?? []).map((website) => ({
+        id: `website-${website.id}`,
+        label: website.name,
+        url: `/websites#${website.id}`,
+      })),
+    },
+    {
+      id: 'domains',
+      label: 'Domains',
+      url: '/domains',
+      icon: <Link2Icon className="size-5" />,
+      items: (domains.data?.domains ?? []).map((domain) => ({
+        id: `domain-${domain.id}`,
+        label: domain.url,
+        url: `/domains#${domain.id}`,
+      })),
+    },
+  ], [websites.data, domains.data])
 
   return (
     <AppPage
@@ -35,7 +61,7 @@ export const Page = ({
           </Link>
         ),
         items: sidebarItems,
-        activeUrl: router.pathname,
+        activeUrl: router.asPath.split('?')[0],
         LinkComponent: Link,
       }}
     >
